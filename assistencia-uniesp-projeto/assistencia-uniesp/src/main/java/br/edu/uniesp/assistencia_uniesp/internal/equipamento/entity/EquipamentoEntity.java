@@ -1,5 +1,6 @@
 package br.edu.uniesp.assistencia_uniesp.internal.equipamento.entity;
 
+import br.edu.uniesp.assistencia_uniesp.internal.cliente.entity.ClienteEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,9 +25,14 @@ public class EquipamentoEntity {
     private String modelo;
 
     @Column(nullable = false, unique = true)
-    private int numeroSerie;
+    private String numeroSerie;
 
-    public EquipamentoEntity(Long id, String tipo, int numeroSerie) {
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private ClienteEntity cliente;
+
+
+    public EquipamentoEntity(Long id, String tipo, String numeroSerie) {
         this.id = id;
         this.tipo = tipo;
         this.numeroSerie = numeroSerie;
@@ -38,5 +44,9 @@ public class EquipamentoEntity {
 
     public void alterarModelo(String modelo) {
         this.modelo = modelo;
+    }
+
+    public void associarCliente(ClienteEntity cliente) {
+        this.cliente = cliente;
     }
 }

@@ -1,8 +1,10 @@
 package br.edu.uniesp.assistencia_uniesp.internal.cliente.entity;
 
+import br.edu.uniesp.assistencia_uniesp.internal.equipamento.entity.EquipamentoEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 
 
 @Getter
@@ -27,11 +29,18 @@ public class ClienteEntity {
     @Column(nullable = false)
     private boolean ativo = true;
 
+    @OneToMany(mappedBy = "cliente")
+    private List<EquipamentoEntity> equipamentos;
 
     public ClienteEntity(Long id, String cpf, String email) {
         this.id = id;
         this.cpf = cpf;
         this.email = email;
+    }
+
+    public void adicionarEquipamento(EquipamentoEntity equipamento) {
+        equipamentos.add(equipamento);
+        equipamento.associarCliente(this);
     }
 
     public void alterarNome(String nome) {
